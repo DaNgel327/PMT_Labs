@@ -21,66 +21,70 @@ class _ArchivePageState extends State<ArchivePage> {
         title: Text('Medical archive'),
       ),
       drawer: MenuDrawer(),
-      body: Center(
-        child: ListView.builder(
-          itemCount: Archive.getPatients.length,
-          itemBuilder: (context, patientCounter) {
-            return ListTile(
-              onTap: () async => await showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Text('Medical card'),
-                  content:
-                      Text('${Archive.getPatients[patientCounter].toString()}'
-                          '\n\n'
-                          'Do you want to send this card?'),
-                  actions: [
-                    TextButton(
-                      child: Text('No'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    TextButton(
-                      child: Text('Yes'),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SenderPage(
-                            Archive.getPatients[patientCounter],
+      body: SingleChildScrollView(
+        child: Center(
+          child: ListView.builder(
+            itemCount: Archive.getPatients.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (context, patientCounter) {
+              return ListTile(
+                onTap: () async => await showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text('Medical card'),
+                    content:
+                        Text('${Archive.getPatients[patientCounter].toString()}'
+                            '\n\n'
+                            'Do you want to send this card?'),
+                    actions: [
+                      TextButton(
+                        child: Text('No'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      TextButton(
+                        child: Text('Yes'),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SenderPage(
+                              Archive.getPatients[patientCounter],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              title: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          '${Archive.getPatients[patientCounter].lastName} '
-                          '${Archive.getPatients[patientCounter].firstName}',
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          Archive.getPatients[patientCounter].status
-                              .toString()
-                              .split('.')
-                              .last,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            );
-          },
+                title: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            '${Archive.getPatients[patientCounter].lastName} '
+                            '${Archive.getPatients[patientCounter].firstName}',
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            Archive.getPatients[patientCounter].status
+                                .toString()
+                                .split('.')
+                                .last,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,

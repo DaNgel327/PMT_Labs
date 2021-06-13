@@ -28,68 +28,77 @@ class _SenderPageState extends State<SenderPage> {
       appBar: AppBar(
         title: Text('Send by email'),
       ),
-      body: Center(
-        child: Wrap(
-          alignment: WrapAlignment.spaceAround,
-          direction: Axis.horizontal,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: TextFormField(
-                obscureText: false,
-                onChanged: (String value) => email = value,
-                validator: (value) =>
-                    value.contains('@') ? null : 'Please enter valid email',
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Enter recipient email',
+                  style: TextStyle(fontSize: 36),
                 ),
               ),
-            ),
-            StreamBuilder<bool>(
-              stream: widget.isMailed.asStream(),
-              builder: (context, snapshot) {
-                return snapshot.data
-                    ? Wrap(
-                        alignment: WrapAlignment.spaceBetween,
-                        direction: Axis.horizontal,
-                        spacing: 5,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 24,
-                          ),
-                          Text(
-                            ' Mailed!',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container();
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {
-                emailProvider = EmailAPIProvider(
-                  emailBody: _generateMailBody(),
-                  emailSubject: 'Medical Cards',
-                  emailRecipient: email,
-                );
-                widget.isMailed = emailProvider.sendEmail();
-
-                setState(() {});
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text('Send'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextFormField(
+                  obscureText: false,
+                  onChanged: (String value) => email = value,
+                  validator: (value) =>
+                      value.contains('@') ? null : 'Please enter valid email',
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
+                ),
               ),
-            )
-          ],
+              StreamBuilder<bool>(
+                stream: widget.isMailed.asStream(),
+                builder: (context, snapshot) {
+                  return snapshot.data
+                      ? Wrap(
+                          alignment: WrapAlignment.spaceBetween,
+                          direction: Axis.horizontal,
+                          spacing: 5,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.check,
+                              color: Colors.green,
+                              size: 24,
+                            ),
+                            Text(
+                              ' Mailed!',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container();
+                },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  emailProvider = EmailAPIProvider(
+                    emailBody: _generateMailBody(),
+                    emailSubject: 'Medical Cards',
+                    emailRecipient: email,
+                  );
+                  widget.isMailed = emailProvider.sendEmail();
+
+                  setState(() {});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text('Send'),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
